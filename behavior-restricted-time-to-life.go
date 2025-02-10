@@ -33,9 +33,9 @@ type behaviorExpirationProlongation[K comparable, V any] struct {
 func (that *behaviorExpirationProlongation[K, V]) Get(keeper Keeper[K, V], entry Entry[K, V]) {
 	that.Behavior.Get(keeper, entry)
 	index := keeper.Index()
-	index.Retract(entry)
+	index.Remove(entry)
 	entry.SetExpiration(time.Now().Add(that.prolongation).UnixNano())
-	index.Assert(entry)
+	index.Append(entry)
 }
 
 func NewRestrictedTimeToLifeBehavior[K comparable, V any](

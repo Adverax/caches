@@ -23,8 +23,8 @@ type behaviorCapacityProlongation[K comparable, V any] struct {
 
 func (that *behaviorCapacityProlongation[K, V]) Get(keeper Keeper[K, V], entry Entry[K, V]) {
 	that.Behavior.Get(keeper, entry)
-	keeper.Index().Retract(entry)
-	keeper.Index().Assert(entry)
+	keeper.Index().Remove(entry)
+	keeper.Index().Append(entry)
 }
 
 func NewRestrictedCapacityBehavior[K comparable, V any](

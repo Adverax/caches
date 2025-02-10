@@ -39,12 +39,12 @@ type Keeper[K comparable, V any] interface {
 type Index[K comparable, V any] interface {
 	// Truncate removes items from the index until the iterator returns false.
 	Truncate(iterator func(entry Entry[K, V]) bool)
-	// Assert adds an item to the index.
-	Assert(entry Entry[K, V])
-	// Retract removes an item from the index.
-	Retract(entry Entry[K, V])
-	// Flush clears the index.
-	Flush()
+	// Append adds an item to the index.
+	Append(entry Entry[K, V])
+	// Remove removes an item from the index.
+	Remove(entry Entry[K, V])
+	// Reset clears the index.
+	Reset()
 }
 
 type Behavior[K comparable, V any] interface {

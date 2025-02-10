@@ -18,7 +18,9 @@ func (that *IndexExpiration[K, V]) Less(i, j int) bool {
 	return that.items[i].Expiration() < that.items[j].Expiration()
 }
 
-func (that *IndexExpiration[K, V]) Flush() {}
+func (that *IndexExpiration[K, V]) Reset() {
+	that.items = nil
+}
 
 func (that *IndexExpiration[K, V]) Truncate(iterator func(entry Entry[K, V]) bool) {
 	for len(that.items) > 0 {
@@ -71,14 +73,14 @@ func (that *IndexExpiration[K, V]) indexOf(entry Entry[K, V]) int {
 	return -1
 }
 
-func (that *IndexExpiration[K, V]) Retract(entry Entry[K, V]) {
+func (that *IndexExpiration[K, V]) Remove(entry Entry[K, V]) {
 	index := that.indexOf(entry)
 	if index != -1 {
 		that.items = append(that.items[:index], that.items[index+1:]...)
 	}
 }
 
-func (that *IndexExpiration[K, V]) Assert(entry Entry[K, V]) {
+func (that *IndexExpiration[K, V]) Append(entry Entry[K, V]) {
 	index := sort.Search(
 		len(that.items),
 		func(i int) bool {

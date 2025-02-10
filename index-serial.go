@@ -18,7 +18,9 @@ func (that *IndexSerial[K, V]) Less(i, j int) bool {
 	return that.items[i].ID() < that.items[j].ID()
 }
 
-func (that *IndexSerial[K, V]) Flush() {}
+func (that *IndexSerial[K, V]) Reset() {
+	that.items = nil
+}
 
 func (that *IndexSerial[K, V]) Truncate(iterator func(entry Entry[K, V]) bool) {
 	for len(that.items) > 0 {
@@ -70,14 +72,14 @@ func (that *IndexSerial[K, V]) indexOf(entry Entry[K, V]) int {
 	return -1
 }
 
-func (that *IndexSerial[K, V]) Retract(entry Entry[K, V]) {
+func (that *IndexSerial[K, V]) Remove(entry Entry[K, V]) {
 	index := that.indexOf(entry)
 	if index != -1 {
 		that.items = append(that.items[:index], that.items[index+1:]...)
 	}
 }
 
-func (that *IndexSerial[K, V]) Assert(entry Entry[K, V]) {
+func (that *IndexSerial[K, V]) Append(entry Entry[K, V]) {
 	index := sort.Search(
 		len(that.items),
 		func(i int) bool {

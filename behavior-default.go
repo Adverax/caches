@@ -13,17 +13,17 @@ func (that *DefaultBehavior[K, V]) Duration() time.Duration {
 func (that *DefaultBehavior[K, V]) Close() {}
 
 func (that *DefaultBehavior[K, V]) Flush(keeper Keeper[K, V]) {
-	keeper.Index().Flush()
+	keeper.Index().Reset()
 }
 
 func (that *DefaultBehavior[K, V]) Get(keeper Keeper[K, V], entry Entry[K, V]) {}
 
 func (that *DefaultBehavior[K, V]) Set(keeper Keeper[K, V], oldEntry, newEntry Entry[K, V]) {
 	if !isZeroVal(oldEntry) {
-		keeper.Index().Retract(oldEntry)
+		keeper.Index().Remove(oldEntry)
 	}
 	if !isZeroVal(newEntry) {
-		keeper.Index().Assert(newEntry)
+		keeper.Index().Append(newEntry)
 	}
 }
 

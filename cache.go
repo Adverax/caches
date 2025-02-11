@@ -2,6 +2,7 @@ package cache
 
 import (
 	"errors"
+	"github.com/adverax/containers/collections"
 	"time"
 )
 
@@ -75,7 +76,7 @@ func (that *Cache[K, V]) Replace(k K, v V, d time.Duration) error {
 
 	oldItem := that.get(k)
 	if oldItem == nil {
-		return ErrNoMatch
+		return collections.ErrNoMatch
 	}
 
 	newItem := that.set(k, v, d)
@@ -174,5 +175,4 @@ func NewCache[K comparable, V any](
 
 var (
 	ErrDuplicate = errors.New("duplicate key")
-	ErrNoMatch   = errors.New("no match")
 )

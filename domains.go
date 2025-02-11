@@ -48,10 +48,10 @@ type Index[K comparable, V any] interface {
 }
 
 type Behavior[K comparable, V any] interface {
-	Duration() time.Duration
-	Flush(keeper Keeper[K, V])
+	Close()
+	Reset(keeper Keeper[K, V])
+	Cleanup(keeper Keeper[K, V])
 	Get(keeper Keeper[K, V], entry Entry[K, V])
 	Set(keeper Keeper[K, V], oldEntry, newEntry Entry[K, V])
-	Cleanup(keeper Keeper[K, V])
-	Close()
+	Duration() time.Duration
 }

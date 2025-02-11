@@ -12,7 +12,7 @@ func (that *DefaultBehavior[K, V]) Duration() time.Duration {
 
 func (that *DefaultBehavior[K, V]) Close() {}
 
-func (that *DefaultBehavior[K, V]) Flush(keeper Keeper[K, V]) {
+func (that *DefaultBehavior[K, V]) Reset(keeper Keeper[K, V]) {
 	keeper.Index().Reset()
 }
 

@@ -147,11 +147,11 @@ func (that *Cache[K, V]) Items() map[K]*Item[K, V] {
 	return m
 }
 
-func (that *Cache[K, V]) Flush() {
+func (that *Cache[K, V]) Reset() {
 	that.keeper.Lock()
 	defer that.keeper.Unlock()
 
-	that.Behavior.Flush(that.keeper)
+	that.Behavior.Reset(that.keeper)
 	that.keeper.items = map[K]*Item[K, V]{}
 }
 

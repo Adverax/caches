@@ -20,10 +20,10 @@ func (that *DefaultBehavior[K, V]) Get(keeper Keeper[K, V], entry Entry[K, V]) {
 
 func (that *DefaultBehavior[K, V]) Set(keeper Keeper[K, V], oldEntry, newEntry Entry[K, V]) {
 	if !isZeroVal(oldEntry) {
-		keeper.Index().Remove(oldEntry)
+		keeper.Index().Exclude(oldEntry)
 	}
 	if !isZeroVal(newEntry) {
-		keeper.Index().Append(newEntry)
+		keeper.Index().Include(newEntry)
 	}
 }
 

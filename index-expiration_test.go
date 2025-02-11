@@ -22,12 +22,12 @@ func (that *IndexExpirationShould) TestIndexExpiration() {
 	item2 := &Item[string, string]{key: "key2", expiration: 2}
 	item3 := &Item[string, string]{key: "key3", expiration: 3}
 
-	index.Append(item1)
-	index.Append(item2)
-	index.Append(item3)
+	index.Include(item1)
+	index.Include(item2)
+	index.Include(item3)
 
 	assert.Equal(that.T(), 3, index.Len())
-	assert.Equal(that.T(), item1, index.items[0])
-	assert.Equal(that.T(), item2, index.items[1])
-	assert.Equal(that.T(), item3, index.items[2])
+	assert.Equal(that.T(), item1, index.Items()[0])
+	assert.Equal(that.T(), item2, index.Items()[1])
+	assert.Equal(that.T(), item3, index.Items()[2])
 }

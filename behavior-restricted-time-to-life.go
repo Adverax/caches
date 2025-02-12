@@ -25,12 +25,12 @@ func (that *BehaviorRestrictedTimeToLife[K, V]) Cleanup(keeper Keeper[K, V]) {
 	)
 }
 
-type behaviorExpirationProlongation[K comparable, V any] struct {
+type behaviorTimeToLifeProlongation[K comparable, V any] struct {
 	Behavior[K, V]
 	prolongation time.Duration
 }
 
-func (that *behaviorExpirationProlongation[K, V]) Get(keeper Keeper[K, V], entry Entry[K, V]) {
+func (that *behaviorTimeToLifeProlongation[K, V]) Get(keeper Keeper[K, V], entry Entry[K, V]) {
 	that.Behavior.Get(keeper, entry)
 	index := keeper.Index()
 	index.Exclude(entry)
@@ -60,7 +60,7 @@ func NewRestrictedTimeToLifeBehavior[K comparable, V any](
 		return b
 	}
 
-	return &behaviorExpirationProlongation[K, V]{
+	return &behaviorTimeToLifeProlongation[K, V]{
 		Behavior:     b,
 		prolongation: duration,
 	}

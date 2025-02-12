@@ -111,7 +111,8 @@ func (that *CacheShould) TestWithMaxSize_MustRemoveItems() {
 			NewRestrictedTimeToLifeBehavior[string, string](nil, time.Hour, false),
 			4,
 			func(entry Entry[string, string]) int64 {
-				return 2
+				val := entry.Value()
+				return int64(len(val))
 			},
 		),
 		NewSerialIndex[string, string](),

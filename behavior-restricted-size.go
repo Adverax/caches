@@ -1,13 +1,13 @@
 package cache
 
-type BehaviorRestrictedSize[K comparable, V any] struct {
+type BehaviorRestrictedMemorySize[K comparable, V any] struct {
 	Behavior[K, V]
 	size    int64
 	maxSize int64
 	sizeOf  func(item Entry[K, V]) int64
 }
 
-func (that *BehaviorRestrictedSize[K, V]) Cleanup(keeper Keeper[K, V]) {
+func (that *BehaviorRestrictedMemorySize[K, V]) Cleanup(keeper Keeper[K, V]) {
 	that.Behavior.Cleanup(keeper)
 	keeper.Index().Truncate(
 		func(item Entry[K, V]) bool {
@@ -21,7 +21,7 @@ func (that *BehaviorRestrictedSize[K, V]) Cleanup(keeper Keeper[K, V]) {
 	)
 }
 
-func (that *BehaviorRestrictedSize[K, V]) Set(keeper Keeper[K, V], oldEntry, newEntry Entry[K, V]) {
+func (that *BehaviorRestrictedMemorySize[K, V]) Set(keeper Keeper[K, V], oldEntry, newEntry Entry[K, V]) {
 	if !isZeroVal(oldEntry) {
 		that.size -= oldEntry.Size()
 	}
@@ -32,7 +32,7 @@ func (that *BehaviorRestrictedSize[K, V]) Set(keeper Keeper[K, V], oldEntry, new
 	that.Behavior.Set(keeper, oldEntry, newEntry)
 }
 
-func NewRestrictedSizeBehavior[K comparable, V any](
+func NewRestrictedMemorySizeBehavior[K comparable, V any](
 	behavior Behavior[K, V],
 	maxSize int64,
 	sizeOf func(item Entry[K, V]) int64,
@@ -45,7 +45,7 @@ func NewRestrictedSizeBehavior[K comparable, V any](
 		maxSize = 1000000
 	}
 
-	return &BehaviorRestrictedSize[K, V]{
+	return &BehaviorRestrictedMemorySize[K, V]{
 		Behavior: behavior,
 		maxSize:  maxSize,
 		sizeOf:   sizeOf,

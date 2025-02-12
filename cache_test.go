@@ -107,7 +107,7 @@ func (that *CacheShould) TestWithCapacity_MustRemoveItems() {
 
 func (that *CacheShould) TestWithMaxSize_MustRemoveItems() {
 	c := NewCache[string, string](
-		NewRestrictedSizeBehavior(
+		NewRestrictedMemorySizeBehavior(
 			NewRestrictedTimeToLifeBehavior[string, string](nil, time.Hour, false),
 			4,
 			func(entry Entry[string, string]) int64 {
